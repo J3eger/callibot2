@@ -1,0 +1,32 @@
+def on_forever():
+    radio.set_group(69)
+basic.forever(on_forever)
+
+def on_button_pressed_a():
+    while True:    
+        while calliBot2.entfernung(C2Einheit.CM) >= 20:
+            calliBot2.motor(C2Motor.BEIDE, C2Dir.VORWÄRTS, 80)
+            def on_received_string(receivedString):
+                calliBot2.motor(C2Motor.LINKS, C2Dir.VORWÄRTS, 60)
+            radio.on_received_string(on_received_string)
+        if calliBot2.entfernung(C2Einheit.CM) < 60:
+            radio.send_string("Sascha ich überhole!")
+            for i in range(600):
+                calliBot2.motor(C2Motor.RECHTS, C2Dir.VORWÄRTS, 100)
+                calliBot2.motor(C2Motor.LINKS, C2Dir.VORWÄRTS, 40)    
+            for i in range(900):
+                calliBot2.motor(C2Motor.BEIDE, C2Dir.VORWÄRTS, 100)
+            for i in range(600): 
+                calliBot2.motor(C2Motor.LINKS, C2Dir.VORWÄRTS, 100)
+                calliBot2.motor(C2Motor.RECHTS, C2Dir.VORWÄRTS, 37)
+            for i in range(2800):
+                calliBot2.motor(C2Motor.BEIDE, C2Dir.VORWÄRTS, 100)
+            for i in range(600):
+                calliBot2.motor(C2Motor.LINKS, C2Dir.VORWÄRTS, 100)
+                calliBot2.motor(C2Motor.RECHTS, C2Dir.VORWÄRTS, 37)    
+            for i in range(900):
+                calliBot2.motor(C2Motor.BEIDE, C2Dir.VORWÄRTS, 100)
+            for i in range(600): 
+                calliBot2.motor(C2Motor.RECHTS, C2Dir.VORWÄRTS, 100)
+                calliBot2.motor(C2Motor.LINKS, C2Dir.VORWÄRTS, 40)
+input.on_button_pressed(Button.A, on_button_pressed_a)

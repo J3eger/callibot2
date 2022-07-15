@@ -1,0 +1,34 @@
+starttime = 0
+amobjektvorbei = False
+endtime = 0
+
+def on_button_pressed_a():
+    global starttime, amobjektvorbei, endtime
+    starttime = input.running_time()
+    while True:
+        if calliBot2.read_line_sensor(C2Sensor.LINKS, C2SensorStatus.HELL):
+            calliBot2.motor(C2Motor.LINKS, C2Dir.VORWÄRTS, 100)
+            calliBot2.set_led(C2Motor.RECHTS, C2State.AN)
+            basic.pause(1)
+            calliBot2.motor_stop(C2Motor.LINKS, C2Stop.BREMSEN)
+            calliBot2.set_led(C2Motor.RECHTS, C2State.AUS)
+        else:
+            if calliBot2.read_line_sensor(C2Sensor.RECHTS, C2SensorStatus.HELL):
+                calliBot2.motor(C2Motor.RECHTS, C2Dir.VORWÄRTS, 100)
+                calliBot2.set_led(C2Motor.LINKS, C2State.AN)
+                basic.pause(1)
+                calliBot2.motor_stop(C2Motor.RECHTS, C2Stop.BREMSEN)
+                calliBot2.set_led(C2Motor.LINKS, C2State.AUS)
+            else:
+                calliBot2.motor(C2Motor.BEIDE, C2Dir.VORWÄRTS, 100)
+                basic.pause(1)
+                calliBot2.motor_stop(C2Motor.BEIDE, C2Stop.BREMSEN)
+        if amobjektvorbei == False and calliBot2.entfernung(C2Einheit.CM) > 25:
+            amobjektvorbei = True
+        if calliBot2.entfernung(C2Einheit.CM) < 20 and amobjektvorbei == True:
+            amobjektvorbei = False
+            break
+    music.play_tone(262, music.beat(BeatFraction.WHOLE))
+    endtime = input.running_time()
+    basic.show_number((endtime - starttime) / 1000)
+input.on_button_pressed(Button.A, on_button_pressed_a)
